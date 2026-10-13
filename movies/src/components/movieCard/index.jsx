@@ -1,3 +1,4 @@
+
 import React from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -11,17 +12,33 @@ import CalendarIcon from "@mui/icons-material/CalendarTodayTwoTone";
 import StarRateIcon from "@mui/icons-material/StarRate";
 import IconButton from "@mui/material/IconButton";
 import Grid from "@mui/material/Grid";
+import Avatar from "@mui/material/Avatar";
 import img from "../../images/film-poster-placeholder.png";
 import { Link } from "react-router";
 
 export default function MovieCard(props) {
   const movie = props.movie;
 
+  const handleAddToFavorite = (e) => {
+    e.preventDefault();
+    props.selectFavorite(movie.id);
+  };
+
   return (
     <Card>
       <CardHeader
-        title={movie.title}
-        sx={{ textWrap: "nowrap" }}
+        avatar={
+          movie.favorite ? (
+            <Avatar sx={{ backgroundColor: "red" }}>
+              <FavoriteIcon />
+            </Avatar>
+          ) : null
+        }
+        title={
+          <Typography variant="h5" component="p">
+            {movie.title}{" "}
+          </Typography>
+        }
       />
 
       <CardMedia
@@ -52,7 +69,10 @@ export default function MovieCard(props) {
       </CardContent>
 
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites" onClick={null}>
+        <IconButton
+          aria-label="add to favorites"
+          onClick={handleAddToFavorite}
+        >
           <FavoriteIcon color="primary" fontSize="large" />
         </IconButton>
 
