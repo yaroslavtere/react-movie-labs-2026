@@ -35,7 +35,8 @@ const MoviesContextProvider = (props) => {
     }
     setPlaylist(newPlaylist);
   };
-  // console.log(playlist);
+
+  console.log("Must Watch:", playlist);
 
   return (
     <MoviesContext.Provider

@@ -29,10 +29,6 @@ export default function MovieCard({ movie, action }) {
     e.preventDefault();
     addToFavorites(movie);
   };
-
-console.log("Movie:", movie.title);
-console.log("Action:", action);
-console.log("Action type:", typeof action);
   
   return (
     <Card>
