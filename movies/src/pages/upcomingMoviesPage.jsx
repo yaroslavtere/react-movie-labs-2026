@@ -1,52 +1,26 @@
-import React, { useState, useEffect } from "react";
-import PageTemplate from "../components/templateMovieListPage";
+import { useState, useEffect } from "react";
+import PageTemplate from '../components/templateMovieListPage';
 import { getUpcomingMovies } from "../api/tmdb-api";
+import AddToPlaylistIcon from "../components/cardIcons/addToPlaylist";
 
-const UpcomingMoviesPage = () => {
+
+const UpcomingPage = () => {
   const [movies, setMovies] = useState([]);
 
-  const addToFavorites = (movieId) => {
-    const updatedMovies = movies.map((m) =>
-      m.id === movieId ? { ...m, favorite: true } : m
-    );
-
-    setMovies(updatedMovies);
-
-    const newFavorites = updatedMovies.filter((m) => m.favorite);
-    const savedFavorites =
-      JSON.parse(localStorage.getItem("favorites")) || [];
-
-    const mergedFavorites = [
-      ...savedFavorites.filter(
-        (saved) => !newFavorites.some((m) => m.id === saved.id)
-      ),
-      ...newFavorites,
-    ];
-
-    localStorage.setItem("favorites", JSON.stringify(mergedFavorites));
-  };
-
-  useEffect(() => {
-    getUpcomingMovies().then((movies) => {
-      const favorites =
-        JSON.parse(localStorage.getItem("favorites")) || [];
-
-      const updatedMovies = movies.map((m) => ({
-        ...m,
-        favorite: favorites.some((f) => f.id === m.id),
-      }));
-
-      setMovies(updatedMovies);
+ useEffect(() => {
+    getUpcomingMovies().then(movies => {
+      setMovies(movies);
     });
   }, []);
-
+  
   return (
     <PageTemplate
-      title="Upcoming Movies"
+      title='Upcoming Movies'
       movies={movies}
-      selectFavorite={addToFavorites}
+      action={(movie) => {
+        return <AddToPlaylistIcon movie={movie} />;
+      }}
     />
   );
 };
-
-export default UpcomingMoviesPage;
+export default UpcomingPage;
