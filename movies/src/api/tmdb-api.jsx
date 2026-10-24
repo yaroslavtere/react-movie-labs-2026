@@ -97,11 +97,32 @@ export const getMovieReviews = ({ queryKey }) => {
 
 export const getPopularMovies = () => {
   return fetch(
-    `https://api.themoviedb.org/3/movie/popular?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=1`
+    `https://api.themoviedb.org/3/movie/popular?api_key=${import.meta.env.VITE_TMDB_KEY}`
   ).then((response) => {
     if (!response.ok) {
-      throw new Error("Failed to fetch popular movies");
+      return response.json().then((error) => {
+        throw new Error(error.status_message || "Something went wrong");
+      });
     }
     return response.json();
+  })
+  .catch((error) => {
+    throw error;
+  });
+};
+
+export const getTopRatedMovies = () => {
+  return fetch(
+    `https://api.themoviedb.org/3/movie/top_rated?api_key=${import.meta.env.VITE_TMDB_KEY}`
+  ).then((response) => {
+    if (!response.ok) {
+      return response.json().then((error) => {
+        throw new Error(error.status_message || "Something went wrong");
+      });
+    }
+    return response.json();
+  })
+  .catch((error) => {
+    throw error;
   });
 };
