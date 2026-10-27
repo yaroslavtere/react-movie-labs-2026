@@ -7,6 +7,7 @@ import { getMovie } from '../api/tmdb-api'
 import { useQuery } from '@tanstack/react-query';
 import Spinner from '../components/spinner'
 import MovieRecommendations from "../components/movieRecommendations";
+import MovieCast from "../components/movieCast";
 
 const MoviePage = (props) => {
   const { id } = useParams();
@@ -29,6 +30,7 @@ const MoviePage = (props) => {
         <>
           <PageTemplate movie={movie}>
             <MovieDetails movie={movie} />
+            <MovieCast movie={movie} />
             <MovieRecommendations movie={movie} />
           </PageTemplate>
         </>
