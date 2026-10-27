@@ -1,4 +1,3 @@
-
 import { useQuery } from "@tanstack/react-query";
 import { getMovieCredits } from "../../api/tmdb-api";
 import Spinner from "../spinner";
@@ -7,6 +6,8 @@ import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
+import { Link } from "react-router";
+import CardActionArea from "@mui/material/CardActionArea";
 
 const MovieCast = ({ movie }) => {
   const { data, error, isPending, isError } = useQuery({
@@ -34,33 +35,39 @@ const MovieCast = ({ movie }) => {
         <Grid container spacing={2}>
           {cast.map((actor) => (
             <Grid
-              key={actor.cast_id ?? actor.credit_id}
+              key={actor.credit_id}
               size={{ xs: 6, sm: 4, md: 3, lg: 2 }}
             >
               <Card sx={{ height: "100%" }}>
-                <CardMedia
-                  component="img"
-                  height="200"
-                  image={
-                    actor.profile_path
-                      ? `https://image.tmdb.org/t/p/w500${actor.profile_path}`
-                      : "https://placehold.co/200x300?text=No+Photo"
-                  }
-                  alt={actor.name}
-                />
+                <CardActionArea
+                  component={Link}
+                  to={`/actors/${actor.id}`}
+                  sx={{ height: "100%" }}
+                >
+                  <CardMedia
+                    component="img"
+                    height="200"
+                    image={
+                      actor.profile_path
+                        ? `https://image.tmdb.org/t/p/w500${actor.profile_path}`
+                        : "https://placehold.co/200x300?text=No+Photo"
+                    }
+                    alt={actor.name}
+                  />
 
-                <CardContent>
-                  <Typography variant="subtitle1">
-                    {actor.name}
-                  </Typography>
+                  <CardContent>
+                    <Typography variant="subtitle1">
+                      {actor.name}
+                    </Typography>
 
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                  >
-                    {actor.character}
-                  </Typography>
-                </CardContent>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                    >
+                      {actor.character}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
               </Card>
             </Grid>
           ))}
