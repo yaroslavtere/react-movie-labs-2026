@@ -53,37 +53,42 @@ export default function FilterMoviesCard(props) {
     handleChange(e, "genre", e.target.value);
   };
 
+  const handleSortChange = (e) => {
+  handleChange(e, "sort", e.target.value);
+};
+
   return (
-    <Card 
+    <Card
       sx={{
         backgroundColor: "rgb(204, 204, 0)"
-      }} 
-      variant="outlined">
+      }}
+      variant="outlined"
+    >
       <CardContent>
         <Typography variant="h5" component="h1">
           <SearchIcon fontSize="large" />
           Filter the movies.
         </Typography>
-            <TextField
-      sx={{...formControl}}
-      id="filled-search"
-      label="Search field"
-      type="search"
-      variant="filled"
-      value={props.titleFilter}
-      onChange={handleTextChange}
-    />
 
-        <FormControl sx={{...formControl}}>
+        <TextField
+          sx={{ ...formControl }}
+          id="filled-search"
+          label="Search field"
+          type="search"
+          variant="filled"
+          value={props.titleFilter}
+          onChange={handleTextChange}
+        />
+
+        <FormControl sx={{ ...formControl }}>
           <InputLabel id="genre-label">Genre</InputLabel>
-            <Select
-    labelId="genre-label"
-    id="genre-select"
-    defaultValue=""
-    value={props.genreFilter}
-    onChange={handleGenreChange}
-  >
-
+          <Select
+            labelId="genre-label"
+            id="genre-select"
+            defaultValue=""
+            value={props.genreFilter}
+            onChange={handleGenreChange}
+          >
             {genres.map((genre) => {
               return (
                 <MenuItem key={genre.id} value={genre.id}>
@@ -93,12 +98,32 @@ export default function FilterMoviesCard(props) {
             })}
           </Select>
         </FormControl>
+
+        <FormControl sx={{ ...formControl }}>
+          <InputLabel id="sort-label">Sort By</InputLabel>
+          <Select
+            labelId="sort-label"
+            id="sort-select"
+            value={props.sortBy}
+            label="Sort By"
+            onChange={handleSortChange}
+          >
+            <MenuItem value="rating-desc">Rating: High to Low</MenuItem>
+            <MenuItem value="rating-asc">Rating: Low to High</MenuItem>
+            <MenuItem value="date-desc">Release Date: Newest</MenuItem>
+            <MenuItem value="date-asc">Release Date: Oldest</MenuItem>
+            <MenuItem value="title-asc">Title: A-Z</MenuItem>
+            <MenuItem value="title-desc">Title: Z-A</MenuItem>
+          </Select>
+        </FormControl>
       </CardContent>
+
       <CardMedia
         sx={{ height: 300 }}
         image={img}
         title="Filter"
       />
+
       <CardContent>
         <Typography variant="h5" component="h1">
           <SearchIcon fontSize="large" />
