@@ -11,75 +11,121 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import CalendarIcon from "@mui/icons-material/CalendarTodayTwoTone";
 import StarRateIcon from "@mui/icons-material/StarRate";
 import Grid from "@mui/material/Grid";
-import Avatar from '@mui/material/Avatar';
-import img from '../../images/film-poster-placeholder.png';
+import Avatar from "@mui/material/Avatar";
+import img from "../../images/film-poster-placeholder.png";
 import { Link } from "react-router";
 
 export default function MovieCard({ movie, action }) {
+  const { favorites } = useContext(MoviesContext);
 
-  const { favorites, addToFavorites } = useContext(MoviesContext);
+  const isFavorite = favorites.includes(movie.id);
 
-  if (favorites.find((id) => id === movie.id)) {
-    movie.favorite = true;
-  } else {
-    movie.favorite = false
-  }
-
-  const handleAddToFavorite = (e) => {
-    e.preventDefault();
-    addToFavorites(movie);
-  };
-  
   return (
-    <Card>
+    <Card
+      sx={{
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        borderRadius: 3,
+        overflow: "hidden",
+        transition: "transform 0.2s, box-shadow 0.2s",
+        "&:hover": {
+          transform: "translateY(-5px)",
+          boxShadow: 8,
+        },
+      }}
+    >
       <CardHeader
+        sx={{ minHeight: 85 }}
         avatar={
-          movie.favorite ? (
-            <Avatar sx={{ backgroundColor: 'red' }}>
+          isFavorite ? (
+            <Avatar sx={{ backgroundColor: "error.main" }}>
               <FavoriteIcon />
             </Avatar>
           ) : null
         }
         title={
-          <Typography variant="h5" component="p">
-            {movie.title}{" "}
+          <Typography
+            variant="h6"
+            sx={{
+              fontWeight: "bold",
+              display: "-webkit-box",
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: "vertical",
+              overflow: "hidden",
+            }}
+          >
+            {movie.title}
           </Typography>
         }
       />
+
       <CardMedia
-        sx={{ height: 500 }}
+        sx={{
+          aspectRatio: "2 / 3",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
         image={
           movie.poster_path
-            ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
+            ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
             : img
         }
+        title={movie.title}
       />
-      <CardContent>
-        <Grid container>
-          <Grid size={{xs: 6}}>
-            <Typography variant="h6" component="p">
+
+      <CardContent sx={{ flexGrow: 1 }}>
+        <Grid container spacing={1}>
+          <Grid size={6}>
+            <Typography
+              variant="body2"
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 0.5,
+              }}
+            >
               <CalendarIcon fontSize="small" />
-              {movie.release_date}
+              {movie.release_date?.slice(0, 4) || "N/A"}
             </Typography>
           </Grid>
-          <Grid size={{xs: 6}}>
-            <Typography variant="h6" component="p">
-              <StarRateIcon fontSize="small" />
-              {"  "} {movie.vote_average}{" "}
+
+          <Grid size={6}>
+            <Typography
+              variant="body2"
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 0.5,
+              }}
+            >
+              <StarRateIcon
+                fontSize="small"
+                sx={{ color: "warning.main" }}
+              />
+              {movie.vote_average?.toFixed(1) ?? "N/A"}
             </Typography>
           </Grid>
         </Grid>
       </CardContent>
-      <CardActions disableSpacing>
-        
-        {action(movie)}
-        
-        <Link to={`/movies/${movie.id}`}>
-          <Button variant="outlined" size="medium" color="primary">
-            More Info ...
-          </Button>
-        </Link>
-        
+
+      <CardActions
+        sx={{
+          justifyContent: "space-between",
+          mt: "auto",
+          p: 2,
+        }}
+      >
+        {action?.(movie)}
+
+        <Button
+          component={Link}
+          to={`/movies/${movie.id}`}
+          variant="contained"
+          size="small"
+        >
+          More Info
+        </Button>
       </CardActions>
     </Card>
   );

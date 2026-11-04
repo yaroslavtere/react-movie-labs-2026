@@ -16,7 +16,7 @@ function MovieListPageTemplate({
 }) {
   const [nameFilter, setNameFilter] = useState("");
   const [genreFilter, setGenreFilter] = useState("0");
-  const [sortBy, setSortBy] = useState("rating-desc");
+  const [sortBy, setSortBy] = useState("default");
   const genreId = Number(genreFilter);
 
   let displayedMovies = movies
