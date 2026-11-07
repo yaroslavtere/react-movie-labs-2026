@@ -8,17 +8,20 @@ import CardHeader from "@mui/material/CardHeader";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import PlaylistAddCheckIcon from "@mui/icons-material/PlaylistAddCheck";
 import CalendarIcon from "@mui/icons-material/CalendarTodayTwoTone";
 import StarRateIcon from "@mui/icons-material/StarRate";
 import Grid from "@mui/material/Grid";
 import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
 import img from "../../images/film-poster-placeholder.png";
 import { Link } from "react-router";
 
 export default function MovieCard({ movie, action }) {
-  const { favorites } = useContext(MoviesContext);
+  const { favorites, playlist } = useContext(MoviesContext);
 
   const isFavorite = favorites.includes(movie.id);
+  const isMustWatch = playlist.includes(movie.id);
 
   return (
     <Card
@@ -38,10 +41,20 @@ export default function MovieCard({ movie, action }) {
       <CardHeader
         sx={{ minHeight: 85 }}
         avatar={
-          isFavorite ? (
-            <Avatar sx={{ backgroundColor: "error.main" }}>
-              <FavoriteIcon />
-            </Avatar>
+          isFavorite || isMustWatch ? (
+            <Box sx={{ display: "flex", gap: 1 }}>
+              {isFavorite && (
+                <Avatar sx={{ backgroundColor: "error.main" }}>
+                  <FavoriteIcon />
+                </Avatar>
+              )}
+
+              {isMustWatch && (
+                <Avatar sx={{ backgroundColor: "primary.main" }}>
+                  <PlaylistAddCheckIcon />
+                </Avatar>
+              )}
+            </Box>
           ) : null
         }
         title={
